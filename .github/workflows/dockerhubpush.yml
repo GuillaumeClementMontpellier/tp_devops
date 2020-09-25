@@ -16,12 +16,12 @@ jobs:
 
       - name: Build :latest
         if: success()
-        run: docker build -t guillaumeclement/tp_devops:latest .
+        run: docker build -t guillaumeclement/tp_devops .
         
       - name: Push to docker hub :latest
         if: success()
         uses: actions-hub/docker@master
         with:
-          args: push guillaumeclement/tp_devops:latest
+          args: push guillaumeclement/tp_devops
           
           
