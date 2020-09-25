@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  app:
+    image: tp_devops
+    ports: 
+      - 8080:8080
+    environment:
+      dbUrl: db/tp_devops
+      dbUsr: tp_devops
+      dbPwd: tp_devops
+    networks: 
+      - common_network
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: tp_devops
+      POSTGRES_USER: tp_devops
+      POSTGRES_DB: tp_devops
+    networks:
+      - common_network
+    volumes:
+       - db-data:/var/lib/postgres/data
+
+volumes:
+  db-data:
+
+networks:
+  common_network:
