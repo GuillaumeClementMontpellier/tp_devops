@@ -6,7 +6,8 @@ jobs:
   github:
     runs-on: ubuntu-latest    
     steps:
-      - uses: actions/checkout@v1
+      - name: Git clone
+        uses: actions/checkout@v1
         
       - name: Setup Java JDK
         uses: actions/setup-java@v1.4.2
@@ -14,8 +15,14 @@ jobs:
           # The Java version to make available on the path. Takes a whole or semver Java version, or 1.x syntax (e.g. 1.8 => Java 8.x). Early access versions can be specified in the form of e.g. 14-ea, 14.0.0-ea, or 14.0.0-ea.28
           java-version: 11
         
+      - name: Docker Run Host test db
+        run: docker run --rm --name test_db -e POSTGRES_PASSWORD=tp_devops -e POSTGRES_USER=tp_devops -e POSTGRES_DB=tp_devops -p 5432:5432 -d postgres
+        
       - name: Compile jar
         run: ./gradlew assemble
+        
+      - name: Compile jar
+        run: ./gradlew check
         
       - name: Build :latest
         if: success()
@@ -32,5 +39,8 @@ jobs:
         uses: actions-hub/docker@master
         with:
           args: push guillaumeclement/tp_devops
+        
+      - name: Docker Quit Host test db
+        run: docker stop test_db
           
           
