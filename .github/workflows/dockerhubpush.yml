@@ -3,7 +3,7 @@ name: Docker registry
 on: [push]
 
 jobs:
-  github:
+  tests:
     runs-on: ubuntu-latest 
     
     container: openjdk:11-jdk
@@ -26,6 +26,14 @@ jobs:
       - name: Create jar
         if: success()
         run: ./gradlew assemble
+        
+  publish:
+    
+    runs-on: ubuntu-latest 
+    
+    steps:
+      - name: Git clone
+        uses: actions/checkout@v1
         
       - name: Build and push Docker images
         if: success()
