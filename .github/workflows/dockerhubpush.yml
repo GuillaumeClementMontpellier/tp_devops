@@ -24,7 +24,7 @@ jobs:
         run: ./gradlew assemble
 
       - name: Test jar
-        run: ./gradlew check
+        run: ./gradlew check -Pdatabase.url=postgres/tp_devops
         
       - name: Build :latest image
         if: success()
@@ -41,8 +41,6 @@ jobs:
         uses: actions-hub/docker@master
         with:
           args: push guillaumeclement/tp_devops
-        
-      - name: Docker quit test db
-        run: docker stop test_db
+
           
           
