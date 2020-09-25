@@ -23,10 +23,6 @@ jobs:
       - name: Test jar
         run: ./gradlew check -Pdatabase.url=postgres/tp_devops
         
-      - name: Create jar
-        if: success()
-        run: ./gradlew assemble
-        
   publish:
     
     runs-on: ubuntu-latest 
