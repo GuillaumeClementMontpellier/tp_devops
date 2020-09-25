@@ -15,16 +15,16 @@ jobs:
           # The Java version to make available on the path. Takes a whole or semver Java version, or 1.x syntax (e.g. 1.8 => Java 8.x). Early access versions can be specified in the form of e.g. 14-ea, 14.0.0-ea, or 14.0.0-ea.28
           java-version: 11
         
-      - name: Docker Run Host test db
-        run: docker run --rm --name test_db -e POSTGRES_PASSWORD=tp_devops -e POSTGRES_USER=tp_devops -e POSTGRES_DB=tp_devops -p 5432:5432 -d postgres
-        
       - name: Compile jar
         run: ./gradlew assemble
         
-      - name: Compile jar
+      - name: Docker Run Host test db
+        run: docker run --rm --name test_db -e POSTGRES_PASSWORD=tp_devops -e POSTGRES_USER=tp_devops -e POSTGRES_DB=tp_devops -p 5432:5432 -d postgres
+        
+      - name: Test jar
         run: ./gradlew check
         
-      - name: Build :latest
+      - name: Build :latest image
         if: success()
         run: docker build -t guillaumeclement/tp_devops .
 
@@ -40,7 +40,7 @@ jobs:
         with:
           args: push guillaumeclement/tp_devops
         
-      - name: Docker Quit Host test db
+      - name: Docker quit test db
         run: docker stop test_db
           
           
