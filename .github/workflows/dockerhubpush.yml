@@ -24,7 +24,7 @@ jobs:
         run: ./gradlew check -Pdatabase.url=postgres/tp_devops
         
   publish:
-    
+    needs: tests
     runs-on: ubuntu-latest 
     
     steps:
